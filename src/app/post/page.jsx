@@ -49,6 +49,26 @@ export default function Post() {
                     placeholder="Digite o seu Nome"
                     required
                 />
+                <br />
+                <input type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={atualizarForm}
+                    placeholder="Digite o seu Email"
+                    required
+                />
+                <br />
+                <textarea
+                    name="body"
+                    value={form.body}
+                    onChange={atualizarForm}
+                    placeholder="Digite o seu Comentário"
+                    required
+                />
+                <br />
+                <button onClick={criarNovoComentario} disabled={loading}>
+                    {loading ? "Carregando..." : "Criar Comentário"}
+                </button>
             </div>
         </div>
     )
