@@ -22,8 +22,9 @@ export default function Post() {
             body: form.body.trim()
           });  
 
-          setAddComment([response.data, ...addComment]); 
+          setAddComment([response.data, ...addComent]); 
           setForm({ name: "", email: "", body: "" });
+          setError(false);
         } catch (error) {
             setError(true);
             console.error("❌ Erro ao criar comentário:", error);
@@ -66,10 +67,24 @@ export default function Post() {
                     required
                 />
                 <br />
-                <button onClick={criarNovoComentario} disabled={loading}>
+                <button onClick={criarNovoComentario} disabled={!form.name.trim() || loading}>
                     {loading ? "Carregando..." : "Criar Comentário"}
                 </button>
             </div>
+
+            {error && <p style={{ color: "red" }}>❌ Erro ao criar comentário</p>}
+
+            <h2>Comentários ({addComent.length})</h2>
+            <ul>
+                {addComent.map((comentario) => (
+                    <li key={comentario.id}>
+                        <hr />
+                        <p><strong>Nome:</strong> {comentario.name}</p>
+                        <p><strong>Email:</strong> {comentario.email}</p>
+                        <p><strong>Comentário:</strong> {comentario.body}</p>
+                    </li>
+                ))}
+            </ul>
         </div>
     )
 }
