@@ -56,19 +56,24 @@ export default function DeletePage() {
                 onChange={(e) => setCommentId(e.target.value)}
             />
             <button onClick={buscarComentario} disabled={loading || !commentId}>
-                {loading ? "Carregando..." : "Buscar Comentário"}
+                {loading ? "Carregando..." : "Deletar Comentário"}
             </button>
             {error && <p style={{ color: "red" }}>{error}</p>}
             {success && <p style={{ color: "green" }}>{success}</p>}
             {comment && (
                 <div>
                     <h2>Comentário Encontrado:</h2>
+                    <p><strong>Nome:</strong> {comment.name || "N/A"}</p>
+                    <p><strong>Email:</strong> {comment.email || "N/A"}</p>
                     <pre>{JSON.stringify(comment, null, 2)}</pre>
                     <button onClick={deleteComentario} disabled={loading}>
                         {loading ? "Deletando..." : "Deletar Comentário"}
                     </button>
                 </div>
             )}
+
+            {error && <p>Erro na operação de deletar</p>}
+            {success && <p>Comentário deletado com sucesso</p>}
         </div>
     );
 }
