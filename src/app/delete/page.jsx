@@ -16,7 +16,7 @@ export default function DeletePage() {
 
         try {
             const response = await axios.get(
-                `https://jsonplaceholder.typicode.com/posts/${commentId}`
+                `https://jsonplaceholder.typicode.com/comments/${commentId}`
             );
             setComment(response.data);
         } catch (error) {
@@ -34,7 +34,7 @@ export default function DeletePage() {
 
         try {
             await axios.delete(
-                `https://jsonplaceholder.typicode.com/posts/${commentId}`
+                `https://jsonplaceholder.typicode.com/comments/${commentId}`
             );
             setSuccess("Comentário deletado com sucesso");
             setComment(null);
@@ -56,7 +56,7 @@ export default function DeletePage() {
                 onChange={(e) => setCommentId(e.target.value)}
             />
             <button onClick={buscarComentario} disabled={loading || !commentId}>
-                {loading ? "Carregando..." : "Deletar Comentário"}
+                {loading ? "Carregando..." : "Buscar Comentário"}
             </button>
             {error && <p style={{ color: "red" }}>{error}</p>}
             {success && <p style={{ color: "green" }}>{success}</p>}
@@ -71,9 +71,6 @@ export default function DeletePage() {
                     </button>
                 </div>
             )}
-
-            {error && <p>Erro na operação de deletar</p>}
-            {success && <p>Comentário deletado com sucesso</p>}
         </div>
     );
 }
