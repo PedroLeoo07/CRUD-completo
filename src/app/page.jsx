@@ -9,7 +9,7 @@ export default function Home() {
                 <br />
                 <Link href="/post">POST</Link>
                 <br />
-                <Link href="/edit">EDIT</Link>
+                <Link href="/put">EDIT</Link>
                 <br />
                 <Link href="/delete">DELETE</Link>
             </nav>
