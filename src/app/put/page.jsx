@@ -6,12 +6,17 @@ export default function Update() {
   const [comment, setCommentId] = useState("");
   const [form, setForm] = useState({ name: "", email: "", body: "" });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
   const buscarComentario = async () => {
+    if (!comment) {
+      setError("Por favor, insira o ID do comentário.");
+      return;
+    }
+
     setLoading(true);
-    setError(false);
+    setError("");
     setSuccess(false);
     try {
       const { data } = await axios.get(
@@ -19,15 +24,20 @@ export default function Update() {
       );
       setForm({ name: data.name, email: data.email, body: data.body });
     } catch (error) {
-      setError(true);
+      setError("Erro ao buscar o comentário. Verifique o ID e tente novamente.");
     } finally {
       setLoading(false);
     }
   };
 
   const editarComentario = async () => {
+    if (!form.name || !form.email || !form.body) {
+      setError("Todos os campos são obrigatórios.");
+      return;
+    }
+
     setLoading(true);
-    setError(false);
+    setError("");
     setSuccess(false);
     try {
       await axios.put(
@@ -40,7 +50,7 @@ export default function Update() {
       );
       setSuccess(true);
     } catch (error) {
-      setError(true);
+      setError("Erro ao atualizar o comentário. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -52,51 +62,60 @@ export default function Update() {
   };
 
   return (
-    <div>
-      <h1>Editar Comentário</h1>
-
-      <div>
-        <input
-          type="number"
-          value={comment}
-          onChange={(e) => setCommentId(e.target.value)}
-          placeholder="ID do comentário"
-        />
-        <button onClick={buscarComentario} disabled={loading}>
-          {loading ? "Carregando..." : "Buscar Comentário"}
-        </button>
-      </div>
-
-      {form.name && (
-        <div>
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder="Nome"
-          />
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Email"
-          />
-          <textarea
-            name="body"
-            value={form.body}
-            onChange={handleChange}
-            placeholder="Comentário"
-          />
-          <button onClick={editarComentario} disabled={loading}>
-            {loading ? "Salvando..." : "Salvar Alterações"}
-          </button>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", flexDirection: "column" }}>
+          <h1>Editar Comentário</h1>
+      
+          <div style={{ width: "100%", maxWidth: "400px", textAlign: "center" }}>
+            <input
+              type="number"
+              value={comment}
+              onChange={(e) => setCommentId(e.target.value)}
+              placeholder="ID do comentário"
+              disabled={loading}
+              style={{ display: "block", margin: "10px auto", width: "100%" }}
+            />
+            <button onClick={buscarComentario} disabled={loading} style={{ margin: "10px auto", width: "100%" }}>
+              {loading ? "Carregando..." : "Buscar Comentário"}
+            </button>
+          </div>
+      
+          {form.name && (
+            <div style={{ width: "100%", maxWidth: "400px", textAlign: "center", marginTop: "20px" }}>
+              <input
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Nome"
+                disabled={loading}
+                style={{ display: "block", margin: "10px auto", width: "100%" }}
+              />
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="Email"
+                disabled={loading}
+                style={{ display: "block", margin: "10px auto", width: "100%" }}
+              />
+              <textarea
+                name="body"
+                value={form.body}
+                onChange={handleChange}
+                placeholder="Comentário"
+                disabled={loading}
+                style={{ display: "block", margin: "10px auto", width: "100%" }}
+              />
+              <button onClick={editarComentario} disabled={loading} style={{ margin: "10px auto", width: "100%" }}>
+                {loading ? "Salvando..." : "Salvar Alterações"}
+              </button>
+            </div>
+          )}
+      
+          {success && <p style={{ color: "green", textAlign: "center" }}>Comentário atualizado com sucesso!</p>}
+          {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
         </div>
-      )}
-
-      {success && <p>Comentário atualizado com sucesso!</p>}
-      {error && <p>Ocorreu um erro. Tente novamente.</p>}
-    </div>
+      
   );
 }
